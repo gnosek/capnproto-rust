@@ -26,7 +26,7 @@ pub mod node {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -158,7 +158,7 @@ pub mod node {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -410,7 +410,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -469,7 +469,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -545,7 +545,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -608,7 +608,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -692,7 +692,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -762,7 +762,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -860,7 +860,7 @@ pub mod node {
       }
 
       impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
         }
       }
@@ -919,7 +919,7 @@ pub mod node {
         fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
           ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
         }
-        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
         }
       }
@@ -996,7 +996,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -1079,7 +1079,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -1203,7 +1203,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -1262,7 +1262,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -1338,7 +1338,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -1404,7 +1404,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -1495,7 +1495,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -1561,7 +1561,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -1658,7 +1658,7 @@ pub mod node {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -1765,7 +1765,7 @@ pub mod node {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -1943,7 +1943,7 @@ pub mod field {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -2037,7 +2037,7 @@ pub mod field {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -2194,7 +2194,7 @@ pub mod field {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -2268,7 +2268,7 @@ pub mod field {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -2381,7 +2381,7 @@ pub mod field {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -2437,7 +2437,7 @@ pub mod field {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -2508,7 +2508,7 @@ pub mod field {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -2576,7 +2576,7 @@ pub mod field {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -2669,7 +2669,7 @@ pub mod enumerant {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -2739,7 +2739,7 @@ pub mod enumerant {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -2838,7 +2838,7 @@ pub mod superclass {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -2901,7 +2901,7 @@ pub mod superclass {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -2988,7 +2988,7 @@ pub mod method {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -3087,7 +3087,7 @@ pub mod method {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -3255,7 +3255,7 @@ pub mod type_ {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -3408,7 +3408,7 @@ pub mod type_ {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -3685,7 +3685,7 @@ pub mod type_ {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -3744,7 +3744,7 @@ pub mod type_ {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -3823,7 +3823,7 @@ pub mod type_ {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -3886,7 +3886,7 @@ pub mod type_ {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -3973,7 +3973,7 @@ pub mod type_ {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -4036,7 +4036,7 @@ pub mod type_ {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -4123,7 +4123,7 @@ pub mod type_ {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -4186,7 +4186,7 @@ pub mod type_ {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -4275,7 +4275,7 @@ pub mod type_ {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -4348,7 +4348,7 @@ pub mod type_ {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -4457,7 +4457,7 @@ pub mod type_ {
       }
 
       impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
         }
       }
@@ -4535,7 +4535,7 @@ pub mod type_ {
         fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
           ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
         }
-        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
         }
       }
@@ -4646,7 +4646,7 @@ pub mod type_ {
       }
 
       impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
         }
       }
@@ -4706,7 +4706,7 @@ pub mod type_ {
         fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
           ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
         }
-        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
         }
       }
@@ -4783,7 +4783,7 @@ pub mod type_ {
       }
 
       impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
         }
       }
@@ -4839,7 +4839,7 @@ pub mod type_ {
         fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
           ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
         }
-        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
         }
       }
@@ -4910,7 +4910,7 @@ pub mod brand {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -4969,7 +4969,7 @@ pub mod brand {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -5046,7 +5046,7 @@ pub mod brand {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -5122,7 +5122,7 @@ pub mod brand {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -5233,7 +5233,7 @@ pub mod brand {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -5305,7 +5305,7 @@ pub mod brand {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -5409,7 +5409,7 @@ pub mod value {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -5582,7 +5582,7 @@ pub mod value {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -5896,7 +5896,7 @@ pub mod annotation {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -5966,7 +5966,7 @@ pub mod annotation {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -6108,7 +6108,7 @@ pub mod capnp_version {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -6172,7 +6172,7 @@ pub mod capnp_version {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -6257,7 +6257,7 @@ pub mod code_generator_request {
   }
 
   impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+    fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[u8]>) -> ::capnp::Result<Reader<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
     }
   }
@@ -6337,7 +6337,7 @@ pub mod code_generator_request {
     fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
       ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
     }
-    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+    fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
       ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
     }
   }
@@ -6460,7 +6460,7 @@ pub mod code_generator_request {
     }
 
     impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+      fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Reader<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
       }
     }
@@ -6530,7 +6530,7 @@ pub mod code_generator_request {
       fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
         ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
       }
-      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+      fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
         ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
       }
     }
@@ -6628,7 +6628,7 @@ pub mod code_generator_request {
       }
 
       impl <'a,> ::capnp::traits::FromPointerReader<'a> for Reader<'a,>  {
-        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[::capnp::Word]>) -> ::capnp::Result<Reader<'a,>> {
+        fn get_from_pointer(reader: &::capnp::private::layout::PointerReader<'a>, default: Option<&'a[u8]>) -> ::capnp::Result<Reader<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructReader::new(reader.get_struct(default)?))
         }
       }
@@ -6691,7 +6691,7 @@ pub mod code_generator_request {
         fn init_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, _size: u32) -> Builder<'a,> {
           ::capnp::traits::FromStructBuilder::new(builder.init_struct(_private::STRUCT_SIZE))
         }
-        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [::capnp::Word]>) -> ::capnp::Result<Builder<'a,>> {
+        fn get_from_pointer(builder: ::capnp::private::layout::PointerBuilder<'a>, default: Option<&'a [u8]>) -> ::capnp::Result<Builder<'a,>> {
           ::std::result::Result::Ok(::capnp::traits::FromStructBuilder::new(builder.get_struct(_private::STRUCT_SIZE, default)?))
         }
       }

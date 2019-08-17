@@ -39,7 +39,7 @@ pub fn new_reader<'a>(p : *const u8, len : u32) -> Reader<'a> {
 }
 
 impl <'a> crate::traits::FromPointerReader<'a> for Reader<'a> {
-    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [crate::Word]>) -> Result<Reader<'a>> {
+    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [u8]>) -> Result<Reader<'a>> {
         reader.get_data(default)
     }
 }
@@ -54,7 +54,7 @@ impl <'a> crate::traits::FromPointerBuilder<'a> for Builder<'a> {
     fn init_pointer(builder : PointerBuilder<'a>, size : u32) -> Builder<'a> {
         builder.init_data(size)
     }
-    fn get_from_pointer(builder :PointerBuilder<'a>, default: Option<&'a [crate::Word]>) -> Result<Builder<'a>> {
+    fn get_from_pointer(builder :PointerBuilder<'a>, default: Option<&'a [u8]>) -> Result<Builder<'a>> {
         builder.get_data(default)
     }
 }

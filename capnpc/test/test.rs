@@ -849,13 +849,13 @@ mod tests {
         use capnp::struct_list;
         use test_capnp::{test_old_version, test_new_version};
 
-        let segment0: &[::capnp::Word] = &[
-            ::capnp::word(1,0,0,0,0x1f,0,0,0), // list, inline composite, 3 words
-            ::capnp::word(4, 0, 0, 0, 1, 0, 2, 0), // struct tag. 1 element, 1 word data, 2 pointers.
-            ::capnp::word(0xab,0,0,0,0,0,0,0),
-            ::capnp::word(0x05,0,0,0, 0x42,0,0,0), // list pointer, offset 1, type = BYTE, length 8.
-            ::capnp::word(0,0,0,0,0,0,0,0),
-            ::capnp::word(0x68,0x65,0x6c,0x6c,0x6f,0x21,0x21,0), // "hello!!"
+        let segment0: &[u8] = &[
+            1,0,0,0,0x1f,0,0,0, // list, inline composite, 3 words
+            4, 0, 0, 0, 1, 0, 2, 0, // struct tag. 1 element, 1 word data, 2 pointers.
+            0xab,0,0,0,0,0,0,0,
+            0x05,0,0,0, 0x42,0,0,0, // list pointer, offset 1, type = BYTE, length 8.
+            0,0,0,0,0,0,0,0,
+            0x68,0x65,0x6c,0x6c,0x6f,0x21,0x21,0, // "hello!!"
         ];
 
         let segment_array = &[segment0];
@@ -876,7 +876,7 @@ mod tests {
         {
             let segments = message.get_segments_for_output();
             assert_eq!(segments.len(), 1);
-            assert_eq!(segments[0].len(), 6);
+            assert_eq!(segments[0].len(), 6 * 8);
         }
 
         {
@@ -889,7 +889,7 @@ mod tests {
         {
             let segments = message.get_segments_for_output();
             // Check the old list, including the tag, was zeroed.
-            assert_eq!(::capnp::Word::words_to_bytes(&segments[0][1..5]), &[0; 32][..]);
+            assert_eq!(&segments[0][8..40], &[0; 32][..]);
         }
 
     }
@@ -961,31 +961,30 @@ mod tests {
 
     #[test]
     fn double_far_pointer() {
-        let segment0: &[::capnp::Word] = &[
-            ::capnp::word(0,0,0,0,0,0,1,0),
+        let segment0: &[u8] = &[
+            0,0,0,0,0,0,1,0,
             // struct pointer, zero offset, zero data words, one pointer.
 
-            ::capnp::word(6,0,0,0,1,0,0,0),
+            6,0,0,0,1,0,0,0,
             // far pointer, two-word landing pad, offset 0, segment 1.
         ];
 
-        let segment1: &[::capnp::Word] = &[
-            ::capnp::word(2,0,0,0,2,0,0,0),
+        let segment1: &[u8] = &[
+            2,0,0,0,2,0,0,0,
             // landing pad start. offset 0, segment 2
 
-            ::capnp::word(0,0,0,0,1,0,1,0),
+            0,0,0,0,1,0,1,0,
             // landing pad tag. struct pointer. One data word. One pointer.
         ];
 
-        let segment2: &[::capnp::Word] = &[
-            ::capnp::word(0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f),
+        let segment2: &[u8] = &[
+            0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,
             // Data word.
 
-            ::capnp::word(1,0,0,0,0x42,0,0,0),
+            1,0,0,0,0x42,0,0,0,
             // text pointer. offset zero. 1-byte elements. 8 total elements.
 
-            ::capnp::word('h' as u8, 'e' as u8, 'l' as u8, 'l' as u8, 'o' as u8,
-                        '.' as u8, '\n' as u8, 0),
+            'h' as u8, 'e' as u8, 'l' as u8, 'l' as u8, 'o' as u8, '.' as u8, '\n' as u8, 0,
         ];
 
         let segment_array = &[segment0, segment1, segment2];
@@ -1002,19 +1001,19 @@ mod tests {
 
     #[test]
     fn double_far_pointer_truncated_pad() {
-        let segment0: &[::capnp::Word] = &[
-            ::capnp::word(6,0,0,0,1,0,0,0),
+        let segment0: &[u8] = &[
+            6,0,0,0,1,0,0,0,
             // far pointer, two-word landing pad, offset 0, segment 1.
         ];
 
-        let segment1: &[::capnp::Word] = &[
-            ::capnp::word(2,0,0,0,2,0,0,0),
+        let segment1: &[u8] = &[
+            2,0,0,0,2,0,0,0,
             // landing pad start. offset 0, segment 2
 
             // For this message to be valid, there would need to be another word here.
         ];
-        let segment2: &[::capnp::Word] = &[
-            ::capnp::word(0,0,0,0,0,0,0,0),
+        let segment2: &[u8] = &[
+            0,0,0,0,0,0,0,0,
         ];
 
         let segment_array = &[segment0, segment1, segment2];
@@ -1031,20 +1030,20 @@ mod tests {
 
     #[test]
     fn double_far_pointer_out_of_bounds() {
-        let segment0: &[::capnp::Word] = &[
-            ::capnp::word(6,0,0,0,1,0,0,0),
+        let segment0: &[u8] = &[
+            6,0,0,0,1,0,0,0,
             // far pointer, two-word landing pad, offset 0, segment 1.
         ];
 
-        let segment1: &[::capnp::Word] = &[
-            ::capnp::word(0xa,0,0,0,2,0,0,0),
+        let segment1: &[u8] = &[
+            0xa,0,0,0,2,0,0,0,
             // landing pad start. offset 1, segment 2
 
-            ::capnp::word(0,0,0,0,1,0,1,0),
+            0,0,0,0,1,0,1,0,
             // landing pad tag. struct pointer. One data word. One pointer.
         ];
-        let segment2: &[::capnp::Word] = &[
-            ::capnp::word(0,0,0,0,0,0,0,0),
+        let segment2: &[u8] = &[
+            0,0,0,0,0,0,0,0,
         ];
 
         let segment_array = &[segment0, segment1, segment2];
@@ -1063,9 +1062,9 @@ mod tests {
     fn far_pointer_pointing_at_self() {
         use test_capnp::test_all_types;
 
-        let words: &[::capnp::Word] =
-            &[::capnp::word(0,0,0,0,0,0,1,0), // struct, one pointer
-              ::capnp::word(0xa,0,0,0,0,0,0,0)]; // far pointer, points to self
+        let words: &[u8] =
+            &[0,0,0,0,0,0,1,0, // struct, one pointer
+              0xa,0,0,0,0,0,0,0]; // far pointer, points to self
         let segment_array = &[words];
 
         let message_reader =
@@ -1095,12 +1094,12 @@ mod tests {
 
     #[test]
     fn inline_composite_list_int_overflow() {
-        let words: &[::capnp::Word] = &[
-            ::capnp::word(0,0,0,0,0,0,1,0),
-            ::capnp::word(1,0,0,0,0x17,0,0,0),
-            ::capnp::word(0,0,0,128,16,0,0,0),
-            ::capnp::word(0,0,0,0,0,0,0,0),
-            ::capnp::word(0,0,0,0,0,0,0,0)];
+        let words: &[u8] = &[
+            0,0,0,0,0,0,1,0,
+            1,0,0,0,0x17,0,0,0,
+            0,0,0,128,16,0,0,0,
+            0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0];
         let segment_array = &[words];
 
         let message =
@@ -1248,7 +1247,7 @@ mod tests {
         }
         let segments = message.get_segments_for_output();
         assert_eq!(segments.len(), 1);
-        assert_eq!(segments[0].len(), 2);
+        assert_eq!(segments[0].len(), 16); // 2 words
 
         let reader = message::Reader::new(message::SegmentArray::new(&segments),
                                           ReaderOptions::new());
@@ -1270,7 +1269,7 @@ mod tests {
         {
             let segments = message.get_segments_for_output();
             assert_eq!(segments.len(), 1);
-            assert_eq!(segments[0].len(), 3);
+            assert_eq!(segments[0].len(), 3 * 8); // 3 words
 
             let reader =
                 message::Reader::new(message::SegmentArray::new(&segments),
@@ -1289,11 +1288,11 @@ mod tests {
     fn total_size_struct_list_amplification() {
         use test_capnp::test_any_pointer;
 
-        let words: &[::capnp::Word] =
-            &[::capnp::word(0,0,0,0, 0,0,1,0), // struct, one pointers
-              ::capnp::word(1,0,0,0, 0xf,0,0,0), // list, inline composite, one word
-              ::capnp::word(0,0x80,0xc2,0xff, 0,0,0,0), // large struct, but zero of them
-              ::capnp::word(0,0,0x20,0, 0,0,0x22,0),
+        let words: &[u8] =
+            &[0,0,0,0, 0,0,1,0, // struct, one pointers
+              1,0,0,0, 0xf,0,0,0, // list, inline composite, one word
+              0,0x80,0xc2,0xff, 0,0,0,0, // large struct, but zero of them
+              0,0,0x20,0, 0,0,0x22,0,
             ];
         let segment_array = &[words];
 

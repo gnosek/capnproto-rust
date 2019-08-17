@@ -67,7 +67,7 @@ where T: for<'b> crate::traits::Owned<'b> {
 }
 
 impl <'a, T> FromPointerReader<'a> for Reader<'a, T> where T: for<'b> crate::traits::Owned<'b> {
-    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [crate::Word]>) -> Result<Reader<'a, T>> {
+    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [u8]>) -> Result<Reader<'a, T>> {
         Ok(Reader { reader: reader.get_list(Pointer, default)?,
                     marker: ::std::marker::PhantomData })
     }
@@ -116,7 +116,7 @@ impl <'a, T> FromPointerBuilder<'a> for Builder<'a, T> where T: for<'b> crate::t
             builder: builder.init_list(Pointer, size)
         }
     }
-    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [crate::Word]>) -> Result<Builder<'a, T>> {
+    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [u8]>) -> Result<Builder<'a, T>> {
         Ok(Builder {
             marker: ::std::marker::PhantomData,
             builder: builder.get_list(Pointer, default)?

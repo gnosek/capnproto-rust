@@ -70,7 +70,7 @@ impl <'a, T> Reader<'a, T> where T: for<'b> crate::traits::OwnedStruct<'b> {
 }
 
 impl <'a, T> FromPointerReader<'a> for Reader<'a, T> where T: for<'b> crate::traits::OwnedStruct<'b> {
-    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [crate::Word]>) -> Result<Reader<'a, T>> {
+    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [u8]>) -> Result<Reader<'a, T>> {
         Ok(Reader { reader: reader.get_list(InlineComposite, default)?,
                     marker: PhantomData })
     }
@@ -144,7 +144,7 @@ impl <'a, T> FromPointerBuilder<'a> for Builder<'a, T> where T: for<'b> crate::t
                 <<T as crate::traits::OwnedStruct>::Builder as HasStructSize>::struct_size())
         }
     }
-    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [crate::Word]>) -> Result<Builder<'a, T>> {
+    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [u8]>) -> Result<Builder<'a, T>> {
         Ok(Builder {
             marker: PhantomData,
             builder:

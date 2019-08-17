@@ -111,20 +111,6 @@ impl Word {
     }
 }
 
-#[cfg(any(feature="quickcheck", test))]
-impl quickcheck::Arbitrary for Word {
-    fn arbitrary<G: quickcheck::Gen>(g: &mut G) -> Word {
-        crate::word(quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g),
-               quickcheck::Arbitrary::arbitrary(g))
-    }
-}
-
 /// Size of a message. Every generated struct has a method `.total_size()` that returns this.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct MessageSize {
@@ -271,13 +257,13 @@ impl ::std::error::Error for Error {
 /// Helper struct that allows `MessageBuilder::get_segments_for_output()` to avoid heap allocations
 /// in the single-segment case.
 pub enum OutputSegments<'a> {
-    SingleSegment([&'a [Word]; 1]),
-    MultiSegment(Vec<&'a [Word]>),
+    SingleSegment([&'a [u8]; 1]),
+    MultiSegment(Vec<&'a [u8]>),
 }
 
 impl <'a> ::std::ops::Deref for OutputSegments<'a> {
-    type Target = [&'a [Word]];
-    fn deref<'b>(&'b self) -> &'b [&'a [Word]] {
+    type Target = [&'a [u8]];
+    fn deref<'b>(&'b self) -> &'b [&'a [u8]] {
         match *self {
             OutputSegments::SingleSegment(ref s) => {
                 s
@@ -290,7 +276,7 @@ impl <'a> ::std::ops::Deref for OutputSegments<'a> {
 }
 
 impl<'s> message::ReaderSegments for OutputSegments<'s> {
-    fn get_segment<'a>(&'a self, id: u32) -> Option<&'a [Word]> {
+    fn get_segment<'a>(&'a self, id: u32) -> Option<&'a [u8]> {
         match *self {
             OutputSegments::SingleSegment(ref s) => {
                 s.get(id as usize).map(|slice| *slice)

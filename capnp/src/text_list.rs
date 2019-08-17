@@ -52,7 +52,7 @@ impl <'a> Reader<'a> {
 }
 
 impl <'a> FromPointerReader<'a> for Reader<'a> {
-    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [crate::Word]>) -> Result<Reader<'a>> {
+    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [u8]>) -> Result<Reader<'a>> {
         Ok(Reader { reader : reader.get_list(Pointer, default)? })
     }
 }
@@ -108,7 +108,7 @@ impl <'a> FromPointerBuilder<'a> for Builder<'a> {
             builder: builder.init_list(Pointer, size)
         }
     }
-    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [crate::Word]>) -> Result<Builder<'a>> {
+    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [u8]>) -> Result<Builder<'a>> {
         Ok(Builder {
             builder: builder.get_list(Pointer, default)?
         })

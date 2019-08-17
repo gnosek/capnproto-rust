@@ -375,7 +375,6 @@ mod tests {
     use std::io::Cursor;
     use quickcheck::{quickcheck, TestResult};
 
-    use crate::{Word};
     use crate::message::{ReaderOptions};
     use crate::serialize::test::write_message_segments;
     use crate::serialize_packed::{PackedRead, PackedWrite};
@@ -392,13 +391,7 @@ mod tests {
         assert_eq!(bytes, unpacked);
     }
 
-    pub fn check_packing(unpacked_unaligned: &[u8], packed: &[u8]) {
-        // We need to make sure the unpacked bytes are aligned before
-        // we pass them to a `PackedWrite`.
-        let mut unpacked_words = Word::allocate_zeroed_vec(unpacked_unaligned.len() / 8);
-        Word::words_to_bytes_mut(&mut unpacked_words).copy_from_slice(unpacked_unaligned);
-        let unpacked = Word::words_to_bytes(&unpacked_words);
-
+    pub fn check_packing(unpacked: &[u8], packed: &[u8]) {
         // --------
         // write
 
@@ -442,11 +435,26 @@ mod tests {
         check_packing(&[0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0], &[0,2]);
     }
 
+    fn word_segments_to_byte_segments(word_segments: Vec<Vec<u64>>) -> Vec<Vec<u8>> {
+        let mut result = Vec::new();
+        for s in word_segments {
+            let mut byte_seg = Vec::new();
+            for w in s {
+                for b in &w.to_le_bytes() {
+                    byte_seg.push(*b)
+                }
+            }
+            result.push(byte_seg);
+        }
+        result
+    }
+
     #[test]
     fn check_round_trip() {
-        fn round_trip(segments: Vec<Vec<Word>>) -> TestResult {
+        fn round_trip(word_segments: Vec<Vec<u64>>) -> TestResult {
             use crate::message::ReaderSegments;
-            if segments.len() == 0 { return TestResult::discard(); }
+            if word_segments.len() == 0 { return TestResult::discard(); }
+            let segments = word_segments_to_byte_segments(word_segments);
             let mut cursor = Cursor::new(Vec::new());
 
             write_message_segments(&mut PackedWrite { inner: &mut cursor }, &segments);
@@ -459,7 +467,7 @@ mod tests {
             }))
         }
 
-        quickcheck(round_trip as fn(Vec<Vec<Word>>) -> TestResult);
+        quickcheck(round_trip as fn(Vec<Vec<u64>>) -> TestResult);
     }
 
     #[test]

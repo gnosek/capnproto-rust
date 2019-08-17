@@ -81,7 +81,7 @@ fn bool_list() {
         crate::word(0x01, 0x00, 0x00, 0x00, 0x51, 0x00, 0x00, 0x00),
         crate::word(0x75, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)];
 
-
+    println!("data.as_ptr() = {:?}", data.as_ptr());
     let pointer_reader =
         crate::private::layout::PointerReader::get_root_unchecked(data.as_ptr());
 

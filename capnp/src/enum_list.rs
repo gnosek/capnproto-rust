@@ -59,7 +59,7 @@ impl <'a, T: FromU16> Reader<'a, T> {
 }
 
 impl <'a, T : FromU16> FromPointerReader<'a> for Reader<'a, T> {
-    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [crate::Word]>) -> Result<Reader<'a, T>> {
+    fn get_from_pointer(reader: &PointerReader<'a>, default: Option<&'a [u8]>) -> Result<Reader<'a, T>> {
         Ok(Reader { reader: reader.get_list(TwoBytes, default)?,
                     marker: PhantomData })
     }
@@ -112,7 +112,7 @@ impl <'a, T : FromU16> FromPointerBuilder<'a> for Builder<'a, T> {
         Builder { builder: builder.init_list(TwoBytes, size),
                   marker: PhantomData }
     }
-    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [crate::Word]>) -> Result<Builder<'a, T>> {
+    fn get_from_pointer(builder: PointerBuilder<'a>, default: Option<&'a [u8]>) -> Result<Builder<'a, T>> {
         Ok(Builder { builder: builder.get_list(TwoBytes, default)?,
                      marker: PhantomData })
     }

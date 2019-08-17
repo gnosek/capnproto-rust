@@ -31,17 +31,18 @@ use crate::traits::Owned;
 use crate::{Result, Word};
 
 #[derive(Copy, Clone)]
+#[repr(C, align(8))]
 pub struct Reader<T> {
     #[doc(hidden)]
     pub phantom: PhantomData<T>,
 
     #[doc(hidden)]
-    pub words: &'static [Word],
+    pub words: &'static [u8],
 }
 
 impl <T> Reader<T> where T: for<'a> Owned<'a> {
     /// Retrieve the value.
     pub fn get(&self) -> Result<<T as Owned<'static>>::Reader> {
-        any_pointer::Reader::new(PointerReader::get_root_unchecked(&self.words[0] as *const Word)).get_as()
+        any_pointer::Reader::new(PointerReader::get_root_unchecked(self.words.as_ptr() as *const Word)).get_as()
     }
 }
