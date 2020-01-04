@@ -40,14 +40,13 @@ fn ptr_sub<T>(p1: *const T, p2: *const T) -> usize {
 
 macro_rules! refresh_buffer(
     ($this:expr, $size:ident, $in_ptr:ident, $in_end:ident, $out:ident,
-     $outBuf:ident, $buffer_begin:ident) => (
+     $outBuf:ident, $buffer:ident) => (
         {
             Pin::new(&mut $this).consume($size);
-            let (b, e) = get_read_buffer(&mut $this).await?;
-            $in_ptr = b;
-            $in_end = e;
-            $size = ptr_sub($in_end, $in_ptr);
-            $buffer_begin = b;
+            $buffer = get_read_buffer(&mut $this).await?;
+            $in_ptr = 0;
+            $in_end = $buffer.len();
+            $size = $in_end;
             if $size == 0 {
                 return Err(io::Error::new(io::ErrorKind::Other,
                                           "Premature end of packed input."));
@@ -56,12 +55,10 @@ macro_rules! refresh_buffer(
         );
     );
 
-async fn get_read_buffer<R: AsyncBufRead + Unpin>(mut reader: R) -> io::Result<(*const u8, *const u8)> {
+async fn get_read_buffer<R: AsyncBufRead + Unpin>(mut reader: R) -> io::Result<Vec<u8>> {
     future::poll_fn(|cx| {
         let buf = futures::ready!(Pin::new(&mut reader).poll_fill_buf(cx))?;
-        unsafe {
-            Poll::Ready(Ok((buf.as_ptr(), buf.get_unchecked(buf.len()) as *const _)))
-        }
+        Poll::Ready(Ok(buf.to_vec()))
     }).await
 }
 
@@ -73,132 +70,134 @@ async fn packed_read<R: AsyncBufRead + Unpin>(mut inner: R, out_buf: &mut [u8]) 
     assert!(len % 8 == 0, "PackedRead reads must be word-aligned.");
 
     unsafe {
-        let mut out = out_buf.as_mut_ptr();
-        let out_end: *mut u8 = out_buf.get_unchecked_mut(len);
+        let mut out = 0usize;
+        let out_end = len;
 
-        let (mut in_ptr, mut in_end) = get_read_buffer(&mut inner).await?;
-        let mut buffer_begin = in_ptr;
-        let mut size = ptr_sub(in_end, in_ptr);
-        if size == 0 {
+        let mut in_buf = get_read_buffer(&mut inner).await?;
+        if in_buf.is_empty() {
             return Ok(0);
         }
+
+        let mut in_ptr = 0usize;
+        let mut in_end = in_buf.len();
+
+        let mut size = in_end - in_ptr;
 
         loop {
 
             let tag: u8;
 
-            assert_eq!(ptr_sub(out, out_buf.as_mut_ptr()) % 8, 0,
+            assert_eq!(out % 8, 0,
                        "Output pointer should always be aligned here.");
 
-            if ptr_sub(in_end, in_ptr) < 10 {
+            if in_end - in_ptr < 10 {
                 if out >= out_end {
-                    Pin::new(&mut inner).consume(ptr_sub(in_ptr, buffer_begin));
-                    return Ok(ptr_sub(out, out_buf.as_mut_ptr()));
+                    Pin::new(&mut inner).consume(in_ptr);
+                    return Ok(out);
                 }
 
-                if ptr_sub(in_end, in_ptr) == 0 {
-                    refresh_buffer!(inner, size, in_ptr, in_end, out, out_buf, buffer_begin);
+                if in_end - in_ptr == 0 {
+                    refresh_buffer!(inner, size, in_ptr, in_end, out, out_buf, in_buf);
                     continue;
                 }
 
                 //# We have at least 1, but not 10, bytes available. We need to read
                 //# slowly, doing a bounds check on each byte.
 
-                tag = *in_ptr;
-                in_ptr = in_ptr.offset(1);
+                tag = in_buf[in_ptr];
+                in_ptr += 1;
 
                 for i in 0..8 {
                     if (tag & (1u8 << i)) != 0 {
-                        if ptr_sub(in_end, in_ptr) == 0 {
+                        if in_end - in_ptr == 0 {
                             refresh_buffer!(inner, size, in_ptr, in_end,
-                                            out, out_buf, buffer_begin);
+                                            out, out_buf, in_buf);
                         }
-                        *out = *in_ptr;
-                        out = out.offset(1);
-                        in_ptr = in_ptr.offset(1);
+                        out_buf[out] = in_buf[in_ptr];
+                        out += 1;
+                        in_ptr += 1;
                     } else {
-                        *out = 0;
-                        out = out.offset(1);
+                        out_buf[out] = 0;
+                        out += 1;
                     }
                 }
 
-                if ptr_sub(in_end, in_ptr) == 0 && (tag == 0 || tag == 0xff) {
+                if in_end - in_ptr == 0 && (tag == 0 || tag == 0xff) {
                     refresh_buffer!(inner, size, in_ptr, in_end,
-                                    out, out_buf, buffer_begin);
+                                    out, out_buf, in_buf);
                 }
             } else {
-                tag = *in_ptr;
-                in_ptr = in_ptr.offset(1);
+                tag = in_buf[in_ptr];
+                in_ptr += 1;
 
                 for n in 0..8 {
                     let is_nonzero = (tag & (1u8 << n)) != 0;
-                    *out = (*in_ptr) & ((-(is_nonzero as i8)) as u8);
-                    out = out.offset(1);
-                    in_ptr = in_ptr.offset(is_nonzero as isize);
+                    out_buf[out] = in_buf[in_ptr] & ((-(is_nonzero as i8)) as u8);
+                    out += 1;
+                    in_ptr += is_nonzero as usize;
                 }
             }
             if tag == 0 {
-                assert!(ptr_sub(in_end, in_ptr) > 0,
+                assert!(in_end - in_ptr > 0,
                         "Should always have non-empty buffer here.");
 
-                let run_length : usize = (*in_ptr) as usize * 8;
-                in_ptr = in_ptr.offset(1);
+                let run_length : usize = in_buf[in_ptr] as usize * 8;
+                in_ptr += 1;
 
-                if run_length > ptr_sub(out_end, out) {
+                if run_length > out_end - out {
                     return Err(io::Error::new(io::ErrorKind::Other,
                                               "Packed input did not end cleanly on a segment boundary."));
                 }
 
-                ptr::write_bytes(out, 0, run_length);
-                out = out.offset(run_length as isize);
+                ptr::write_bytes(out_buf.get_unchecked_mut(out), 0, run_length);
+                out += run_length;
 
             } else if tag == 0xff {
-                assert!(ptr_sub(in_end, in_ptr) > 0,
+                assert!(in_end - in_ptr > 0,
                         "Should always have non-empty buffer here");
 
-                let mut run_length : usize = (*in_ptr) as usize * 8;
-                in_ptr = in_ptr.offset(1);
+                let mut run_length : usize = in_buf[in_ptr] as usize * 8;
+                in_ptr += 1;
 
-                if run_length > ptr_sub(out_end, out) {
+                if run_length > out_end - out {
                     return Err(io::Error::new(io::ErrorKind::Other,
                                               "Packed input did not end cleanly on a segment boundary."));
                 }
 
-                let in_remaining = ptr_sub(in_end, in_ptr);
+                let in_remaining = in_end - in_ptr;
                 if in_remaining >= run_length {
                     //# Fast path.
-                    ptr::copy_nonoverlapping(in_ptr, out, run_length);
-                    out = out.offset(run_length as isize);
-                    in_ptr = in_ptr.offset(run_length as isize);
+                    ptr::copy_nonoverlapping(in_buf.get_unchecked_mut(in_ptr), out_buf.get_unchecked_mut(out), run_length);
+                    out += run_length;
+                    in_ptr += run_length;
                 } else {
                     //# Copy over the first buffer, then do one big read for the rest.
-                    ptr::copy_nonoverlapping(in_ptr, out, in_remaining);
-                    out = out.offset(in_remaining as isize);
+                    ptr::copy_nonoverlapping(in_buf.get_unchecked_mut(in_ptr), out_buf.get_unchecked_mut(out), in_remaining);
+                    out += in_remaining;
                     run_length -= in_remaining;
 
                     Pin::new(&mut inner).consume(size);
                     {
-                        let buf = slice::from_raw_parts_mut::<u8>(out, run_length);
+                        let buf = slice::from_raw_parts_mut::<u8>(out_buf.get_unchecked_mut(out), run_length);
                         inner.read_exact(buf).await?;
                     }
 
-                    out = out.offset(run_length as isize);
+                    out += run_length;
 
                     if out == out_end {
                         return Ok(len);
                     } else {
-                        let (b, e) = get_read_buffer(&mut inner).await?;
-                        in_ptr = b;
-                        in_end = e;
-                        size = ptr_sub(e, b);
-                        buffer_begin = in_ptr;
+                        in_buf = get_read_buffer(&mut inner).await?;
+                        in_ptr = 0;
+                        in_end = in_buf.len();
+                        size = in_end;
                         continue;
                     }
                 }
             }
 
             if out == out_end {
-                Pin::new(&mut inner).consume(ptr_sub(in_ptr, buffer_begin));
+                Pin::new(&mut inner).consume(in_ptr);
                 return Ok(len);
             }
         }
@@ -661,6 +660,15 @@ mod tests {
             assert_eq!(&segment[..], result_segments.get_segment(i as u32).unwrap());
             true
         });
+    }
+
+    #[test]
+    fn read_is_send() {
+        let body = [1u8, 3u8, 0u8, 1u8];
+        let mut cursor = Cursor::new(&body[..]);
+
+        let read_fut = read_message(&mut cursor, ReaderOptions::new());
+        let _: &dyn Send = &read_fut;
     }
 
     #[test]
