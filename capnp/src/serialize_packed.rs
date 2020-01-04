@@ -463,6 +463,23 @@ mod tests {
     }
 
     #[test]
+    fn check_roundtrip_empty() {
+        let segments = vec!(vec![], vec![], vec![], vec![]);
+        use crate::message::ReaderSegments;
+        let mut cursor = Cursor::new(Vec::new());
+
+        write_message_segments(&mut PackedWrite { inner: &mut cursor }, &segments);
+        dbg!(cursor.get_ref());
+        cursor.set_position(0);
+        let message = read_message(&mut cursor, ReaderOptions::new()).unwrap();
+        let result_segments = message.into_segments();
+        segments.iter().enumerate().all(|(i, segment)| {
+            assert_eq!(&segment[..], result_segments.get_segment(i as u32).unwrap());
+            true
+        });
+    }
+
+    #[test]
     fn fuzz_unpack() {
         fn unpack(packed: Vec<u8>) -> TestResult {
 
