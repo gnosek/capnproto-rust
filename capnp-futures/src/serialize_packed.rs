@@ -33,11 +33,6 @@ use capnp::{message, Error, Result, Word, OutputSegments};
 use futures::{AsyncBufRead, AsyncReadExt, AsyncWrite, AsyncWriteExt, future};
 use futures::task::Poll;
 
-#[inline]
-fn ptr_sub<T>(p1: *const T, p2: *const T) -> usize {
-    (p1 as usize - p2 as usize) / mem::size_of::<T>()
-}
-
 macro_rules! refresh_buffer(
     ($this:expr, $size:ident, $in_ptr:ident, $in_end:ident, $out:ident,
      $outBuf:ident, $buffer:ident) => (
@@ -67,7 +62,7 @@ async fn packed_read<R: AsyncBufRead + Unpin>(mut inner: R, out_buf: &mut [u8]) 
 
     if len == 0 { return Ok(0); }
 
-    assert!(len % 8 == 0, "PackedRead reads must be word-aligned.");
+    assert_eq!(len % 8, 0, "PackedRead reads must be word-aligned.");
 
     unsafe {
         let mut out = 0usize;
@@ -224,7 +219,7 @@ pub struct OwnedSegments {
 }
 
 impl message::ReaderSegments for OwnedSegments {
-    fn get_segment<'a>(&'a self, id: u32) -> Option<&'a [Word]> {
+    fn get_segment(&self, id: u32) -> Option<&[Word]> {
         if id < self.segment_slices.len() as u32 {
             let (a, b) = self.segment_slices[id as usize];
             Some(&self.owned_space[a..b])
@@ -315,18 +310,18 @@ fn parse_segment_table_first(buf: &[u8]) -> Result<(usize, usize)>
 
 /// Something that contains segments ready to be written out.
 pub trait AsOutputSegments {
-    fn as_output_segments<'a>(&'a self) -> OutputSegments<'a>;
+    fn as_output_segments(&self) -> OutputSegments;
 }
 
 
 impl <'a, M> AsOutputSegments for &'a M where M: AsOutputSegments {
-    fn as_output_segments<'b>(&'b self) -> OutputSegments<'b> {
+    fn as_output_segments(&self) -> OutputSegments {
         (*self).as_output_segments()
     }
 }
 
 impl <A> AsOutputSegments for message::Builder<A> where A: message::Allocator {
-    fn as_output_segments<'a>(&'a self) -> OutputSegments<'a> {
+    fn as_output_segments(&self) -> OutputSegments {
         self.get_segments_for_output()
     }
 }
@@ -338,7 +333,7 @@ impl <A> AsOutputSegments for message::Builder<A> where A: message::Allocator {
 }*/
 
 impl <A> AsOutputSegments for ::std::rc::Rc<message::Builder<A>> where A: message::Allocator {
-    fn as_output_segments<'a>(&'a self) -> OutputSegments<'a> {
+    fn as_output_segments(&self) -> OutputSegments {
         self.get_segments_for_output()
     }
 }
@@ -358,8 +353,8 @@ async fn packed_write<W: AsyncWrite + Unpin>(writer: &mut W, in_buf: &[u8]) -> i
         let mut buf_idx: usize = 0;
         let mut buf: [u8; 64] = [0; 64];
 
-        let mut in_ptr: *const u8 = in_buf.get_unchecked(0);
-        let in_end: *const u8 = in_buf.get_unchecked(in_buf.len());
+        let mut in_ptr = 0usize;
+        let in_end = in_buf.len();
 
         while in_ptr < in_end {
 
@@ -374,45 +369,45 @@ async fn packed_write<W: AsyncWrite + Unpin>(writer: &mut W, in_buf: &[u8]) -> i
             let tag_pos = buf_idx;
             buf_idx += 1;
 
-            let bit0 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit0 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit0 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit1 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit1 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit1 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit2 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit2 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit2 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit3 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit3 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit3 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit4 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit4 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit4 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit5 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit5 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit5 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit6 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit6 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit6 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
-            let bit7 = (*in_ptr != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = *in_ptr;
+            let bit7 = (in_buf[in_ptr] != 0) as u8;
+            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
             buf_idx += bit7 as usize;
-            in_ptr = in_ptr.offset(1);
+            in_ptr += 1;
 
             let tag: u8 = (bit0 << 0) | (bit1 << 1) | (bit2 << 2) | (bit3 << 3)
                 | (bit4 << 4) | (bit5 << 5) | (bit6 << 6) | (bit7 << 7);
@@ -426,18 +421,18 @@ async fn packed_write<W: AsyncWrite + Unpin>(writer: &mut W, in_buf: &[u8]) -> i
                 //# one).
 
                 // Here we use our assumption that the input buffer is 8-byte aligned.
-                let mut in_word : *const u64 = in_ptr as *const u64;
-                let mut limit : *const u64 = in_end as *const u64;
-                if ptr_sub(limit, in_word) > 255 {
-                    limit = in_word.offset(255);
+                let mut in_word = in_ptr;
+                let mut limit = in_end;
+                if limit - in_word > 255 * 8 {
+                    limit = in_word + (255 * 8);
                 }
-                while in_word < limit && *in_word == 0 {
-                    in_word = in_word.offset(1);
+                while in_word < limit && in_buf[in_word..in_word + 7].iter().all(|b| *b == 0) {
+                    in_word += 8;
                 }
 
-                *buf.get_unchecked_mut(buf_idx) = ptr_sub(in_word, in_ptr as *const u64) as u8;
+                *buf.get_unchecked_mut(buf_idx) = ((in_word - in_ptr) / 8) as u8;
                 buf_idx += 1;
-                in_ptr = in_word as *const u8;
+                in_ptr = in_word;
             } else if tag == 0xff {
                 //# An all-nonzero word is followed by a count of
                 //# consecutive uncompressed words, followed by the
@@ -449,33 +444,33 @@ async fn packed_write<W: AsyncWrite + Unpin>(writer: &mut W, in_buf: &[u8]) -> i
                 //# where our compression scheme becomes a net win.
                 let run_start = in_ptr;
                 let mut limit = in_end;
-                if ptr_sub(limit, in_ptr) > 255 * 8 {
-                    limit = in_ptr.offset(255 * 8);
+                if limit - in_ptr > 255 * 8 {
+                    limit = in_ptr + (255 * 8);
                 }
 
                 while in_ptr < limit {
                     let mut c = 0;
 
                     for _ in 0..8 {
-                        c += (*in_ptr == 0) as u8;
-                        in_ptr = in_ptr.offset(1);
+                        c += (in_buf[in_ptr] == 0) as u8;
+                        in_ptr += 1;
                     }
 
                     if c >= 2 {
                         //# Un-read the word with multiple zeros, since
                         //# we'll want to compress that one.
-                        in_ptr = in_ptr.offset(-8);
+                        in_ptr = in_ptr - 8;
                         break;
                     }
                 }
 
-                let count: usize = ptr_sub(in_ptr, run_start);
+                let count: usize = in_ptr - run_start;
                 *buf.get_unchecked_mut(buf_idx) = (count / 8) as u8;
                 buf_idx += 1;
 
                 writer.write_all(&buf[..buf_idx]).await?;
                 buf_idx = 0;
-                writer.write_all(slice::from_raw_parts::<u8>(run_start, count)).await?;
+                writer.write_all(&in_buf[run_start .. run_start + count]).await?;
             }
         }
 
@@ -669,6 +664,15 @@ mod tests {
 
         let read_fut = read_message(&mut cursor, ReaderOptions::new());
         let _: &dyn Send = &read_fut;
+    }
+
+    #[test]
+    fn write_is_send() {
+        let segments = vec!(vec![], vec![], vec![], vec![]);
+        let mut cursor = Cursor::new(Vec::new());
+
+        let write_fut = write_message_segments(&mut cursor, &segments);
+        let _: &dyn Send = &write_fut;
     }
 
     #[test]
