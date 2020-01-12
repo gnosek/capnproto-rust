@@ -349,134 +349,132 @@ pub async fn write_message<W,M>(mut writer: W, message: M) -> Result<()>
 }
 
 async fn packed_write<W: AsyncWrite + Unpin>(writer: &mut W, in_buf: &[u8]) -> io::Result<usize> {
-    unsafe {
-        let mut buf_idx: usize = 0;
-        let mut buf: [u8; 64] = [0; 64];
+    let mut buf_idx: usize = 0;
+    let mut buf: [u8; 64] = [0; 64];
 
-        let mut in_ptr = 0usize;
-        let in_end = in_buf.len();
+    let mut in_ptr = 0usize;
+    let in_end = in_buf.len();
 
-        while in_ptr < in_end {
+    while in_ptr < in_end {
 
-            if buf_idx + 10 > buf.len() {
-                //# Oops, we're out of space. We need at least 10
-                //# bytes for the fast path, since we don't
-                //# bounds-check on every byte.
-                writer.write_all(&buf[..buf_idx]).await?;
-                buf_idx = 0;
-            }
-
-            let tag_pos = buf_idx;
-            buf_idx += 1;
-
-            let bit0 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit0 as usize;
-            in_ptr += 1;
-
-            let bit1 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit1 as usize;
-            in_ptr += 1;
-
-            let bit2 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit2 as usize;
-            in_ptr += 1;
-
-            let bit3 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit3 as usize;
-            in_ptr += 1;
-
-            let bit4 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit4 as usize;
-            in_ptr += 1;
-
-            let bit5 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit5 as usize;
-            in_ptr += 1;
-
-            let bit6 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit6 as usize;
-            in_ptr += 1;
-
-            let bit7 = (in_buf[in_ptr] != 0) as u8;
-            *buf.get_unchecked_mut(buf_idx) = in_buf[in_ptr];
-            buf_idx += bit7 as usize;
-            in_ptr += 1;
-
-            let tag: u8 = (bit0 << 0) | (bit1 << 1) | (bit2 << 2) | (bit3 << 3)
-                | (bit4 << 4) | (bit5 << 5) | (bit6 << 6) | (bit7 << 7);
-
-
-            *buf.get_unchecked_mut(tag_pos) = tag;
-
-            if tag == 0 {
-                //# An all-zero word is followed by a count of
-                //# consecutive zero words (not including the first
-                //# one).
-
-                // Here we use our assumption that the input buffer is 8-byte aligned.
-                let mut in_word = in_ptr;
-                let mut limit = in_end;
-                if limit - in_word > 255 * 8 {
-                    limit = in_word + (255 * 8);
-                }
-                while in_word < limit && in_buf[in_word..in_word + 7].iter().all(|b| *b == 0) {
-                    in_word += 8;
-                }
-
-                *buf.get_unchecked_mut(buf_idx) = ((in_word - in_ptr) / 8) as u8;
-                buf_idx += 1;
-                in_ptr = in_word;
-            } else if tag == 0xff {
-                //# An all-nonzero word is followed by a count of
-                //# consecutive uncompressed words, followed by the
-                //# uncompressed words themselves.
-
-                //# Count the number of consecutive words in the input
-                //# which have no more than a single zero-byte. We look
-                //# for at least two zeros because that's the point
-                //# where our compression scheme becomes a net win.
-                let run_start = in_ptr;
-                let mut limit = in_end;
-                if limit - in_ptr > 255 * 8 {
-                    limit = in_ptr + (255 * 8);
-                }
-
-                while in_ptr < limit {
-                    let mut c = 0;
-
-                    for _ in 0..8 {
-                        c += (in_buf[in_ptr] == 0) as u8;
-                        in_ptr += 1;
-                    }
-
-                    if c >= 2 {
-                        //# Un-read the word with multiple zeros, since
-                        //# we'll want to compress that one.
-                        in_ptr = in_ptr - 8;
-                        break;
-                    }
-                }
-
-                let count: usize = in_ptr - run_start;
-                *buf.get_unchecked_mut(buf_idx) = (count / 8) as u8;
-                buf_idx += 1;
-
-                writer.write_all(&buf[..buf_idx]).await?;
-                buf_idx = 0;
-                writer.write_all(&in_buf[run_start .. run_start + count]).await?;
-            }
+        if buf_idx + 10 > buf.len() {
+            //# Oops, we're out of space. We need at least 10
+            //# bytes for the fast path, since we don't
+            //# bounds-check on every byte.
+            writer.write_all(&buf[..buf_idx]).await?;
+            buf_idx = 0;
         }
 
-        writer.write_all(&buf[..buf_idx]).await?;
-        Ok(in_buf.len())
+        let tag_pos = buf_idx;
+        buf_idx += 1;
+
+        let bit0 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit0 as usize;
+        in_ptr += 1;
+
+        let bit1 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit1 as usize;
+        in_ptr += 1;
+
+        let bit2 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit2 as usize;
+        in_ptr += 1;
+
+        let bit3 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit3 as usize;
+        in_ptr += 1;
+
+        let bit4 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit4 as usize;
+        in_ptr += 1;
+
+        let bit5 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit5 as usize;
+        in_ptr += 1;
+
+        let bit6 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit6 as usize;
+        in_ptr += 1;
+
+        let bit7 = (in_buf[in_ptr] != 0) as u8;
+        buf[buf_idx] = in_buf[in_ptr];
+        buf_idx += bit7 as usize;
+        in_ptr += 1;
+
+        let tag: u8 = (bit0 << 0) | (bit1 << 1) | (bit2 << 2) | (bit3 << 3)
+            | (bit4 << 4) | (bit5 << 5) | (bit6 << 6) | (bit7 << 7);
+
+
+        buf[tag_pos] = tag;
+
+        if tag == 0 {
+            //# An all-zero word is followed by a count of
+            //# consecutive zero words (not including the first
+            //# one).
+
+            // Here we use our assumption that the input buffer is 8-byte aligned.
+            let mut in_word = in_ptr;
+            let mut limit = in_end;
+            if limit - in_word > 255 * 8 {
+                limit = in_word + (255 * 8);
+            }
+            while in_word < limit && in_buf[in_word..in_word + 7].iter().all(|b| *b == 0) {
+                in_word += 8;
+            }
+
+            buf[buf_idx] = ((in_word - in_ptr) / 8) as u8;
+            buf_idx += 1;
+            in_ptr = in_word;
+        } else if tag == 0xff {
+            //# An all-nonzero word is followed by a count of
+            //# consecutive uncompressed words, followed by the
+            //# uncompressed words themselves.
+
+            //# Count the number of consecutive words in the input
+            //# which have no more than a single zero-byte. We look
+            //# for at least two zeros because that's the point
+            //# where our compression scheme becomes a net win.
+            let run_start = in_ptr;
+            let mut limit = in_end;
+            if limit - in_ptr > 255 * 8 {
+                limit = in_ptr + (255 * 8);
+            }
+
+            while in_ptr < limit {
+                let mut c = 0;
+
+                for _ in 0..8 {
+                    c += (in_buf[in_ptr] == 0) as u8;
+                    in_ptr += 1;
+                }
+
+                if c >= 2 {
+                    //# Un-read the word with multiple zeros, since
+                    //# we'll want to compress that one.
+                    in_ptr = in_ptr - 8;
+                    break;
+                }
+            }
+
+            let count: usize = in_ptr - run_start;
+            buf[buf_idx] = (count / 8) as u8;
+            buf_idx += 1;
+
+            writer.write_all(&buf[..buf_idx]).await?;
+            buf_idx = 0;
+            writer.write_all(&in_buf[run_start .. run_start + count]).await?;
+        }
     }
+
+    writer.write_all(&buf[..buf_idx]).await?;
+    Ok(in_buf.len())
 }
 
 async fn packed_write_all<W: AsyncWrite + Unpin>(writer: &mut W, mut buf: &[u8]) -> io::Result<()> {
